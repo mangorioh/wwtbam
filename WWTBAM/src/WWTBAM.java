@@ -10,5 +10,6 @@ public class WWTBAM {
 //        wwtbam.run();
 
         DBManager db = new DBManager();
+        db.updateDB("CREATE TABLE FRIENDS (NAME VARCHAR(20), WEIGHT DOUBLE)");
     }
 }
