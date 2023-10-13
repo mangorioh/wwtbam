@@ -61,27 +61,31 @@ public class FileIO {
      * params: ./resources/questions.txt
      * returns: ArrayList of Question objects
      */
-    public static ArrayList<Question> readQuestions() throws FileNotFoundException, IOException
-    {
-        ArrayList<Question> out = new ArrayList<>();
-        
-        FileReader s = new FileReader("./resources/questions.txt");
-        BufferedReader inStream = new BufferedReader(s);
-        
-        String line;
-        while ((line = inStream.readLine()) != null)
-        {
-            //public Question(String prompt, String[] answers, int cAnswer)
-            StringTokenizer st = new StringTokenizer(line, "»");
-            out.add(new Question(st.nextToken(),
-                        Integer.parseInt(st.nextToken()),
-                                new String[] {st.nextToken(), st.nextToken(), st.nextToken(), st.nextToken()}));
+public static ArrayList<Question> readQuestions() throws FileNotFoundException, IOException {
+    ArrayList<Question> out = new ArrayList<>();
+
+    FileReader s = new FileReader("./resources/questions.txt");
+    BufferedReader inStream = new BufferedReader(s);
+
+    String line;
+    while ((line = inStream.readLine()) != null) {
+        StringTokenizer st = new StringTokenizer(line, "|");
+        if (st.hasMoreTokens()) {
+            System.out.println(line);
+            String prompt = st.nextToken();
+            int correctAnswerIndex = Integer.parseInt(st.nextToken());
+            String[] answers = new String[4];
+            for (int i = 0; i < 4 && st.hasMoreTokens(); i++) {
+                answers[i] = st.nextToken();
+            }
+            out.add(new Question(prompt, correctAnswerIndex, answers));
         }
-        
-        inStream.close();
-        
-        return out;
     }
+
+    inStream.close();
+
+    return out;
+}
     
     /* 
      * writes to and updates questions file
