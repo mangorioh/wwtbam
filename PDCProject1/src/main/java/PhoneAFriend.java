@@ -18,11 +18,14 @@ import java.util.Scanner;
 public class PhoneAFriend extends LifeLine{
     private HashMap<String, Double> friends;
     private int uses;
+    private DBManager db;
     
-    public PhoneAFriend() throws IOException
+    public PhoneAFriend()
     {
-         this.friends = FileIO.readFriends();
-         this.resetUses();
+        db = new DBManager();
+        
+        this.friends = db.getFriends();
+        this.resetUses();
     }
     
     /* 

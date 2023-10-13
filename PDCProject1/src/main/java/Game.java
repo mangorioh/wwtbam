@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Game {
     private static final int[] PRIZES = {0, 500, 1000, 2000, 5000, 10000, 20000, 50000, 75000, 150000, 250000, 500000, 1000000};
@@ -16,11 +18,15 @@ public class Game {
     private final int GAME_LENGTH = 12;
     private final int SAFETY_INTERVAL = 4;
     
-    public Game() throws IOException
+    private DBManager db;
+    
+    public Game()
     {
+        this.db = new DBManager();
+
         //sets up and initialises question pool and past user scores
-        this.questions = FileIO.readQuestions();
-        this.scores = FileIO.readScores();
+        this.questions = db.getQuestions();
+        this.scores = new UserScores();
         
         if (!minQuestions())
         {
@@ -34,7 +40,7 @@ public class Game {
         lifelines[2] = new PhoneAFriend();
         
         this.log = new LogProfile();
-        FileIO.clearLog();
+        
     }
 
     /* 
@@ -289,7 +295,7 @@ public class Game {
         System.out.println("And that ends our game! Let's have you record your score now.");
         log.setUser(scores.addScore(recordScore()));
         
-        FileIO.writeLog(log.toString());
+//        FileIO.writeLog(log.toString());
     }
     
 }

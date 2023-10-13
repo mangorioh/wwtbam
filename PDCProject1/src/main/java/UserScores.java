@@ -5,50 +5,26 @@ import java.util.Collections;
 
 public class UserScores {
     private ArrayList<User> users;
+    DBManager db;
     
-    public UserScores(ArrayList<User> users)
+    public UserScores()
     {
-        this.users = users;
+        this.db = new DBManager();
+        
+        this.users = db.getScores();
     }
     
     /* 
-     * adds user to scores if new, updates if existing and higher, then sorts in descending order
      * params: user to add
      * returns: newest added user
      */
     public User addScore(User user)
     {
-        boolean userExists = false;
+        DBManager db = new DBManager();
         
-        //edge case if userscores is empty
-        if (users.isEmpty())
-        {
-            users.add(user);
-        }
-        else
-        {
-            //find and update any existing user scores
-            for (int i = 0; i < users.size(); i++)
-            {
-                if (user.getUsername().equals(users.get(i).getUsername()))
-                {
-                    if (user.getScore() > users.get(i).getScore()){
-                        users.get(i).setScore(user.getScore());
-                    }
-                    
-                    userExists = true;
-                    break;
-                }
-            }
-            
-            if (!userExists)
-            {
-                users.add(user);
-            }
-        }
+        db.addScore(user);
         
-        //sorts in descending order. maintains top 10
-        Collections.sort(users, Collections.reverseOrder());
+        this.users = db.getScores();
         
         return user;
     }
@@ -68,7 +44,7 @@ public class UserScores {
             out += users.get(i).getScore() + "\n";
         }
         
-        if (users.size() == 0)
+        if (users.isEmpty())
         {
             out += "No user scores recorded yet!";
         }

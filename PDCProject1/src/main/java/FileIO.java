@@ -17,25 +17,25 @@ public class FileIO {
      * params: ./resources/user_scores.txt
      * returns: UserScores object
      */
-    public static UserScores readScores() throws FileNotFoundException, IOException
-    {
-        ArrayList<User> out = new ArrayList<>();
-        
-        FileReader s = new FileReader("./resources/user_scores.txt");
-        BufferedReader inStream = new BufferedReader(s);
-        
-        String line;
-        while ((line = inStream.readLine()) != null)
-        {
-            StringTokenizer st = new StringTokenizer(line);
-            //users.put(st.nextToken(), Integer.valueOf(st.nextToken()));
-            out.add(new User(st.nextToken(), Integer.parseInt(st.nextToken())));
-        }
-        
-        inStream.close();
-        
-        return new UserScores(out);
-    }
+//    public static UserScores readScores() throws FileNotFoundException, IOException
+//    {
+//        ArrayList<User> out = new ArrayList<>();
+//        
+//        FileReader s = new FileReader("./resources/user_scores.txt");
+//        BufferedReader inStream = new BufferedReader(s);
+//        
+//        String line;
+//        while ((line = inStream.readLine()) != null)
+//        {
+//            StringTokenizer st = new StringTokenizer(line);
+//            //users.put(st.nextToken(), Integer.valueOf(st.nextToken()));
+//            out.add(new User(st.nextToken(), Integer.parseInt(st.nextToken())));
+//        }
+//        
+//        inStream.close();
+//        
+//        return new UserScores(out);
+//    }
     
     /* 
      * writes to and updates user_scores file
