@@ -160,11 +160,13 @@ public class DBManager {
             statement = conn.createStatement();
             if (checkUser(u.getUsername()))
             {
+                System.out.println("user found!!");
                 statement.executeUpdate("UPDATE SCORES SET SCORE = " + u.getScore() + " WHERE USER_ID = '" + u.getUsername() + "'");
             }
             else
             {
-                statement.executeUpdate("INSERT INTO SCORES VALUES (" + u.getUsername() + ", " + u.getScore() + ")");
+                System.out.println("user not found!!");
+                statement.executeUpdate("INSERT INTO SCORES VALUES ('" + u.getUsername() + "', " + u.getScore() + ")");
             }
 
         } catch (SQLException e) {

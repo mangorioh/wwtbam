@@ -40,7 +40,7 @@ public class Menu {
         String pass = "";
         boolean running = true;
         
-        System.out.println(FileIO.readLogo());
+//        System.out.println(FileIO.readLogo());
         
         do
         {
@@ -60,7 +60,7 @@ public class Menu {
                     {
                         game.play();
                     }
-                    FileIO.writeScores(game.getUserScores());
+                    //FileIO.writeScores(game.getUserScores());
                     break;
                 case ("B"):
                     System.out.println(game.getUserScores().getTopTen());
@@ -86,7 +86,7 @@ public class Menu {
                     {
                         game.addQuestion(Question.createQuestion());
                     }
-                    FileIO.writeQuestions(game.getQuestions());
+                    //FileIO.writeQuestions(game.getQuestions());
                     break;
                 case ("D"):
                     System.out.println("Thank you for playing!");

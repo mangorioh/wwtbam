@@ -83,6 +83,7 @@ public class Game {
      */
     public void addQuestion(Question q)
     {
+        db.addQuestion(q);
         questions.add(q);
     }
     
