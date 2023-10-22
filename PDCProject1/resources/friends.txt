@@ -1,6 +1,0 @@
-Reggie»0.65
-Lisa»0.9
-David»0.4
-Terry»0.5
-Benson»0.7
-Sylvia»0.75
