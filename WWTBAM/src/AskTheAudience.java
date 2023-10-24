@@ -111,7 +111,7 @@ public class AskTheAudience extends LifeLine{
      */
     public String toString()
     {
-        return "Ask the Audience | Uses Left: " + uses;
+        return "Ask the Audience\nUses Left: " + uses;
     }
     
 }

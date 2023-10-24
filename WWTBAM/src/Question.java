@@ -72,9 +72,9 @@ public class Question {
      * params: user choice
      * returns: boolean if correct answer matches user choice
      */
-    public boolean checkAnswer(char choice)
+    public boolean checkAnswer(int choice)
     {
-        return (IDENTIFIERS[correctAnswer] == choice);
+        return (correctAnswer == choice);
     }
     
     /* 

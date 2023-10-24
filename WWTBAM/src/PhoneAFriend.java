@@ -148,7 +148,7 @@ public class PhoneAFriend extends LifeLine{
     @Override
     public String toString()
     {
-        return "Phone A Friend | Uses Left: " + uses;
+        return "Phone A Friend\nUses Left: " + uses;
     }
 
     

@@ -60,7 +60,7 @@ public class FiftyFifty extends LifeLine{
 
     public String toString()
     {
-        return "Fifty Fifty | Single Use";
+        return "Fifty Fifty\nSingle Use";
     }
     
 }
