@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,14 +16,18 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements ActionListener{
 
-    JPanel mainPanel, promptPanel, lifelinePanel, optionPanel, audiencePanel, infoPanel;
-    JLabel prompt;
+    JPanel mainPanel, promptPanel, lifelinePanel, optionPanel, audiencePanel, infoPanel, friendPanel, continuePanel;
+    JLabel prompt, info, prizes;
+    JLabel[] votes;
     JButton[] lifelineButtons, optionButtons;
+    JButton continueButton, endButton;
     Game2 game;
+    LifeLine[] lifelines;
     
     public GamePanel(LifeLine[] lifelines)
     {
         game = new Game2();
+        this.lifelines = lifelines;
         
         mainPanel =  new JPanel(new BorderLayout(10, 10));
         
@@ -37,11 +43,11 @@ public class GamePanel extends JPanel implements ActionListener{
         lifelinePanel.setBackground(Color.BLUE);
         lifelinePanel.setPreferredSize(new Dimension(120, 120));
         lifelineButtons = new JButton[lifelines.length];
-        System.out.println(lifelines.length);
+        
         for (int i = 0; i < lifelines.length; i++)
         {
             lifelineButtons[i] = new JButton();
-            String text = "<html>" + lifelines[i].toString().replaceAll("\n", "<br>") + "</html>";
+            String text = TextUtils.swingText(lifelines[i].toString());
             lifelineButtons[i].setText(text);
             lifelineButtons[i].addActionListener(this);
             lifelineButtons[i].setFocusable(false);
@@ -56,7 +62,7 @@ public class GamePanel extends JPanel implements ActionListener{
         for (int i = 0; i < optionButtons.length; i++) 
         {
             optionButtons[i] = new JButton();
-            optionButtons[i].setText("TO COME");
+            optionButtons[i].setText("");
             optionButtons[i].addActionListener(this);
             optionButtons[i].setFocusable(false);
             optionButtons[i].setSize(250, 50);
@@ -66,7 +72,7 @@ public class GamePanel extends JPanel implements ActionListener{
         audiencePanel = new JPanel(new GridLayout(4, 1, 10, 10));
         audiencePanel.setBackground(Color.YELLOW);
         audiencePanel.setPreferredSize(new Dimension(120, 120));
-        JLabel[] votes = new JLabel[4];        
+        votes = new JLabel[4];        
         for (int i = 0; i < votes.length; i++)
         {
             votes[i] = new JLabel();
@@ -77,12 +83,52 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         
         //calls, continues, scores,
-        infoPanel = new JPanel();
+        infoPanel = new JPanel(new GridBagLayout());
         infoPanel.setBackground(Color.orange);
-        infoPanel.setPreferredSize(new Dimension(120, 120));
+        infoPanel.setPreferredSize(new Dimension(500, 120));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+
+        // Create an inner panel for the "info" label
+        JPanel infoInnerPanel = new JPanel(new BorderLayout());
+        infoInnerPanel.setBackground(Color.white);
         
+        JPanel continuePanel = new JPanel(new GridLayout(2, 1, 10, 10));
+        continueButton = new JButton("Continue");
+        continueButton.addActionListener(this);
+        continueButton.setFocusable(false);
+        continueButton.setVisible(false);
+        continuePanel.add(continueButton);
         
-        
+        endButton = new JButton("End");
+        endButton.addActionListener(this);
+        endButton.setFocusable(false);
+        endButton.setVisible(false);
+        continuePanel.add(endButton);
+
+        info = new JLabel("test!!!!!");
+        info.setHorizontalAlignment(JLabel.CENTER);
+        info.setVerticalAlignment(JLabel.CENTER);
+
+        infoInnerPanel.add(info, BorderLayout.CENTER);
+        infoInnerPanel.add(continuePanel, BorderLayout.EAST);
+        infoPanel.add(infoInnerPanel, gbc);
+
+        JPanel prizesInnerPanel = new JPanel(new BorderLayout());
+
+        prizes = new JLabel("test");
+        prizes.setHorizontalAlignment(JLabel.CENTER);
+        prizes.setVerticalAlignment(JLabel.CENTER);
+
+        prizesInnerPanel.add(prizes, BorderLayout.CENTER);
+        infoPanel.add(prizesInnerPanel, gbc);
+
+        infoPanel.getComponent(0).setPreferredSize(new Dimension(infoPanel.getPreferredSize().width * 2 / 3, infoPanel.getPreferredSize().height));
+        infoPanel.getComponent(1).setPreferredSize(new Dimension(infoPanel.getPreferredSize().width / 3, infoPanel.getPreferredSize().height));
+
         mainPanel.add(promptPanel, BorderLayout.NORTH);
         mainPanel.add(lifelinePanel, BorderLayout.WEST);
         mainPanel.add(audiencePanel, BorderLayout.EAST);
@@ -96,16 +142,102 @@ public class GamePanel extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        for (int i = 0; i < optionButtons.length; i++)
+        if (e.getSource() == continueButton)
         {
-            if (e.getSource() == optionButtons[i])
-            {
-                if (game.submitAnswer(i))
-                {
-                    game.nextQuestion();
-                }
-                updateQuestion();
+            info.setText("");
+            game.nextQuestion();
+            updateQuestion();
+            continueButton.setVisible(false);
+            endButton.setVisible(false);
+        }
+        else if (e.getSource() == endButton)
+        {
+            UserInput userInput = new UserInput(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = (String) e.getActionCommand();
+                game.recordScore(username);
             }
+            });
+            
+            continueButton.setEnabled(false);
+            endButton.setEnabled(false);
+            userInput.setVisible(true);
+        }
+        else
+        { 
+            for (int i = 0; i < optionButtons.length; i++)
+            {
+                if (e.getSource() == optionButtons[i])
+                {
+                    if (game.submitAnswer(i))
+                    {
+                        lockOptions();
+                        lockLifelines();
+                        continueButton.setVisible(true);
+                        endButton.setVisible(true);
+                        info.setText("Continue?");
+                    }
+                    prizes.setText("" + game.getScore());
+                }
+            }
+
+            for (int i = 0; i < lifelineButtons.length; i++)
+            {
+                if (e.getSource() == lifelineButtons[i])
+                {         
+                    for(int j = 0; j < lifelineButtons.length; j++)
+                    {
+                        lifelineButtons[j].setEnabled(false);
+                    }
+                    useLifeline(i);
+                }
+            }
+        }
+    }
+    
+    private void useLifeline(int index)
+    {
+        LifeLine lifeline =  lifelines[index];
+        
+        lifelines[index].use();
+        
+        if (lifeline instanceof FiftyFifty fiftyFifty){
+            int[] options = fiftyFifty.getHint(game.getCurrentQuestion().getCorrectAnswer());
+            
+            for (int i = 0; i < optionButtons.length; i++)
+            {
+                if (i != options[0] && i != options[1])
+                {
+                    optionButtons[i].setEnabled(false);
+                }
+            }
+        }
+        else if (lifeline instanceof AskTheAudience askTheAudience)
+        {
+            int[] voteNums = askTheAudience.getHint(game.getCurrentQuestion().getCorrectAnswer());
+            
+            for (int i = 0; i < votes.length; i++)
+            {
+                votes[i].setText(voteNums[i] + "%");
+            }
+        }
+        else if (lifeline instanceof PhoneAFriend phoneAFriend)
+        {         
+            FriendSelect comboBoxFrame = new FriendSelect(phoneAFriend.getFriends(), new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedOption = (String) e.getActionCommand();
+                phoneAFriend.selectFriend(selectedOption);
+                info.setText(TextUtils.swingText(phoneAFriend.getSpeak(game.getCurrentQuestion())));
+
+                unlockOptions();
+            }
+            });
+
+            lockOptions();
+            
+            comboBoxFrame.setVisible(true);
         }
     }
     
@@ -115,19 +247,66 @@ public class GamePanel extends JPanel implements ActionListener{
         {
             Question q = game.getCurrentQuestion();
 
-            prompt.setText("<html>" + q.getPrompt() + "</html>");
+            prompt.setText(TextUtils.swingText(q.getPrompt()));
 
             for(int i = 0; i < optionButtons.length; i++)
             {
                 optionButtons[i].setText(q.getAnswers()[i]);
             }
+            
+            //reset all hints
+            info.setText("");
+            unlockLifelines();
+            unlockOptions();
+            for (int i = 0; i < votes.length; i++)
+            {
+                votes[i].setText("");
+            }
+            for(int i = 0; i < lifelineButtons.length; i++)
+            {
+                String text = TextUtils.swingText(lifelines[i].toString());
+                lifelineButtons[i].setText(text);
+            }
         }
         else
         {
-            for(int i = 0; i < optionButtons.length; i++)
+            lockOptions();
+            lockLifelines();
+        }
+    }
+    
+    private void lockOptions()
+    {
+        for(int i = 0; i < optionButtons.length; i++)
+        {
+            optionButtons[i].setEnabled(false);
+        }
+    }
+    
+    private void lockLifelines()
+    {
+        for(int i = 0; i < lifelineButtons.length; i++)
+        {
+            lifelineButtons[i].setEnabled(false);
+        }
+    }
+    
+    private void unlockLifelines()
+    {
+        for(int i = 0; i < lifelineButtons.length; i++)
+        {
+            if (!lifelines[i].isUsed())
             {
-                optionButtons[i].setEnabled(false);
+                lifelineButtons[i].setEnabled(true);
             }
+        }
+    }
+    
+    private void unlockOptions()
+    {
+        for(int i = 0; i < optionButtons.length; i++)
+        {
+            optionButtons[i].setEnabled(true);
         }
     }
     

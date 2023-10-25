@@ -61,4 +61,9 @@ public class TextUtils {
         
         return false;
     }
+    
+    public static String swingText(String input)
+    {
+        return "<html>" + input.replaceAll("\n", "<br>") + "</html>";
+    }
 }

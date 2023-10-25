@@ -29,24 +29,24 @@ public class FiftyFifty extends LifeLine{
      * returns: none
      */
     @Override
-    public void use(int correctAnswer) {
+    public void use() {
+        used = true;
+    }
+    
+    public int[] getHint(int correctAnswer)
+    {
         Random rand = new Random();
-
-        System.out.println("The answers have been narrowed down to...");
+        
+        System.out.println("correct" + correctAnswer);
         
         int wrongAnswer;
         do {
             wrongAnswer = rand.nextInt(Question.getANSQTY());           
         } while (wrongAnswer == correctAnswer);
         
-        if (wrongAnswer < correctAnswer) {
-            System.out.println(Question.getIDENTIFIERS()[wrongAnswer] + " or " + Question.getIDENTIFIERS()[correctAnswer]);
-        }
-        else {
-            System.out.println(Question.getIDENTIFIERS()[correctAnswer] + " or " + Question.getIDENTIFIERS()[wrongAnswer]);
-        }
+        System.out.println("wrong" + wrongAnswer);
         
-        used = true;
+        return new int[] {correctAnswer, wrongAnswer};
     }
     
     /* 

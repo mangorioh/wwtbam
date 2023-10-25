@@ -11,7 +11,8 @@ public class GUI{
         frame.setTitle("TEST");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(500, 500);
+        frame.setSize(800, 700);
+        frame.setLocationRelativeTo(null);
         
         
         LifeLine[] lifelines;
