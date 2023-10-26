@@ -104,51 +104,53 @@ public class MenuPanel extends JPanel implements ActionListener{
         return adminMode;
     }
     
-    private void addQuestion()
+    private void lockMenu()
     {
         for (int i = 0; i < menuOptions.length; i++) {
             menuOptions[i].setEnabled(false);
         }
-
-        JDialog dialog = new JDialog(); // Create a new dialog
-        QuestionBuilder qb = new QuestionBuilder();
-        dialog.getContentPane().add(qb); // Add the QuestionBuilder panel to the dialog
-        dialog.pack();
-        dialog.setTitle("Question Builder");
-        dialog.setSize(450, 400);
-        dialog.setLocationRelativeTo(this);
-        dialog.setResizable(false);
-        dialog.setModal(true); // Set the dialog to be modal
-        dialog.setVisible(true); // Show the dialog and block further code execution until it's closed
-        
-
-        // Continue to "stage 2" after the dialog is closed
+    }
+    
+    private void unlockMenu()
+    {
         for (int i = 0; i < menuOptions.length; i++) {
             menuOptions[i].setEnabled(true);
         }
     }
     
-    private void addFriend()
+    private void addQuestion()
     {
-        for (int i = 0; i < menuOptions.length; i++) {
-            menuOptions[i].setEnabled(false);
-        }
+        lockMenu();
 
-        JDialog dialog = new JDialog(); // Create a new dialog
-        FriendBuilder fb = new FriendBuilder();
-        dialog.getContentPane().add(fb); // Add the QuestionBuilder panel to the dialog
+        JDialog dialog = new JDialog();
+        QuestionBuilder qb = new QuestionBuilder();
+        dialog.getContentPane().add(qb);
         dialog.pack();
         dialog.setTitle("Question Builder");
+        dialog.setSize(450, 400);
         dialog.setLocationRelativeTo(this);
         dialog.setResizable(false);
-        dialog.setModal(true); // Set the dialog to be modal
-        dialog.setVisible(true); // Show the dialog and block further code execution until it's closed
+        dialog.setModal(true);
+        dialog.setVisible(true);
         
+        unlockMenu();
+    }
+    
+    private void addFriend()
+    {
+        lockMenu();
 
-        // Continue to "stage 2" after the dialog is closed
-        for (int i = 0; i < menuOptions.length; i++) {
-            menuOptions[i].setEnabled(true);
-        }
+        JDialog dialog = new JDialog();
+        FriendBuilder fb = new FriendBuilder();
+        dialog.getContentPane().add(fb);
+        dialog.pack();
+        dialog.setTitle("Friend Builder");
+        dialog.setLocationRelativeTo(this);
+        dialog.setResizable(false);
+        dialog.setModal(true);
+        dialog.setVisible(true);
+        
+        unlockMenu();
     }
     
     private void handleStartGame()
