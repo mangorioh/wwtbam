@@ -21,10 +21,11 @@ public class GUI{
         lifelines[1] = new FiftyFifty();
         lifelines[2] = new PhoneAFriend();
         
-        GamePanel gp = new GamePanel(lifelines);
+        GamePanel gp = new GamePanel();
+        MenuPanel mp = new MenuPanel();
         
-        frame.add(gp.getPanel());
-        
+        //frame.add(gp);
+        frame.add(mp);
         //frame.add(new JLabel("TESTSTSTST"));
         frame.setVisible(true);
     }

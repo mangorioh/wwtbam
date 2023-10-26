@@ -83,6 +83,10 @@ public class Game2 {
         }
     }
 
+    public LifeLine[] getLifelines(){
+        return lifelines;
+    }
+    
     public boolean getPlaying()
     {
         return playing;

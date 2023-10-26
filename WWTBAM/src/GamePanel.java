@@ -2,7 +2,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,7 +15,7 @@ import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements ActionListener{
 
-    JPanel mainPanel, promptPanel, lifelinePanel, optionPanel, audiencePanel, infoPanel, friendPanel, continuePanel;
+    JPanel promptPanel, lifelinePanel, optionPanel, audiencePanel, infoPanel, friendPanel, continuePanel;
     JLabel prompt, info, prizes;
     JLabel[] votes;
     JButton[] lifelineButtons, optionButtons;
@@ -24,12 +23,12 @@ public class GamePanel extends JPanel implements ActionListener{
     Game2 game;
     LifeLine[] lifelines;
     
-    public GamePanel(LifeLine[] lifelines)
+    public GamePanel()
     {
         game = new Game2();
-        this.lifelines = lifelines;
+        this.lifelines = game.getLifelines();
         
-        mainPanel =  new JPanel(new BorderLayout(10, 10));
+        setLayout(new BorderLayout(10, 10));
         
         promptPanel = new JPanel();
         promptPanel.setBackground(Color.red);
@@ -129,11 +128,11 @@ public class GamePanel extends JPanel implements ActionListener{
         infoPanel.getComponent(0).setPreferredSize(new Dimension(infoPanel.getPreferredSize().width * 2 / 3, infoPanel.getPreferredSize().height));
         infoPanel.getComponent(1).setPreferredSize(new Dimension(infoPanel.getPreferredSize().width / 3, infoPanel.getPreferredSize().height));
 
-        mainPanel.add(promptPanel, BorderLayout.NORTH);
-        mainPanel.add(lifelinePanel, BorderLayout.WEST);
-        mainPanel.add(audiencePanel, BorderLayout.EAST);
-        mainPanel.add(infoPanel, BorderLayout.SOUTH);
-        mainPanel.add(optionPanel, BorderLayout.CENTER);
+        add(promptPanel, BorderLayout.NORTH);
+        add(lifelinePanel, BorderLayout.WEST);
+        add(audiencePanel, BorderLayout.EAST);
+        add(infoPanel, BorderLayout.SOUTH);
+        add(optionPanel, BorderLayout.CENTER);
         
         game.nextQuestion();
         updateQuestion();
@@ -152,17 +151,7 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         else if (e.getSource() == endButton)
         {
-            UserInput userInput = new UserInput(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = (String) e.getActionCommand();
-                game.recordScore(username);
-            }
-            });
-            
-            continueButton.setEnabled(false);
-            endButton.setEnabled(false);
-            userInput.setVisible(true);
+            readUser();
         }
         else
         { 
@@ -176,7 +165,14 @@ public class GamePanel extends JPanel implements ActionListener{
                         lockLifelines();
                         continueButton.setVisible(true);
                         endButton.setVisible(true);
-                        info.setText("Continue?");
+                        info.setText("Correct! Continue?");
+                    }
+                    else
+                    {
+                        info.setText("Incorrect! Game Over!");
+                        lockOptions();
+                        lockLifelines();
+                        readUser();
                     }
                     prizes.setText("" + game.getScore());
                 }
@@ -275,6 +271,21 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    private void readUser()
+    {
+        UserInput userInput = new UserInput(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String username = (String) e.getActionCommand();
+            game.recordScore(username);
+        }
+        });
+
+        continueButton.setEnabled(false);
+        endButton.setEnabled(false);
+        userInput.setVisible(true);
+    }
+    
     private void lockOptions()
     {
         for(int i = 0; i < optionButtons.length; i++)
@@ -308,10 +319,5 @@ public class GamePanel extends JPanel implements ActionListener{
         {
             optionButtons[i].setEnabled(true);
         }
-    }
-    
-    public JPanel getPanel()
-    {
-        return mainPanel;
     }
 }

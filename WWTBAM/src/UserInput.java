@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -46,7 +47,9 @@ public class UserInput extends JFrame {
                 }
                 else
                 {
-                    
+                    JOptionPane.showMessageDialog(UserInput.this,
+                            "Invalid input. Please enter a 3-character string with letters only.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 
             }
@@ -56,4 +59,5 @@ public class UserInput extends JFrame {
         pack();
         setLocationRelativeTo(null); 
     }
+    
 }
