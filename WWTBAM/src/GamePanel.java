@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -31,7 +32,6 @@ public class GamePanel extends JPanel implements ActionListener{
         setLayout(new BorderLayout(10, 10));
         
         promptPanel = new JPanel();
-        promptPanel.setBackground(Color.red);
         promptPanel.setPreferredSize(new Dimension(120, 120));
         prompt = new JLabel("prompt goes here");
         prompt.setFont(new Font(Font.SANS_SERIF,  Font.BOLD, 16));
@@ -39,7 +39,6 @@ public class GamePanel extends JPanel implements ActionListener{
         promptPanel.add(prompt);
         
         lifelinePanel = new JPanel(new GridLayout(lifelines.length, 1, 10, 10));
-        lifelinePanel.setBackground(Color.BLUE);
         lifelinePanel.setPreferredSize(new Dimension(120, 120));
         lifelineButtons = new JButton[lifelines.length];
         
@@ -55,7 +54,6 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         
         optionPanel = new JPanel(new GridLayout(4, 1, 10, 10));
-        optionPanel.setBackground(Color.green);
         optionPanel.setPreferredSize(new Dimension(120, 120));
         optionButtons = new JButton[4];
         for (int i = 0; i < optionButtons.length; i++) 
@@ -69,7 +67,6 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         
         audiencePanel = new JPanel(new GridLayout(4, 1, 10, 10));
-        audiencePanel.setBackground(Color.YELLOW);
         audiencePanel.setPreferredSize(new Dimension(120, 120));
         votes = new JLabel[4];        
         for (int i = 0; i < votes.length; i++)
@@ -83,7 +80,6 @@ public class GamePanel extends JPanel implements ActionListener{
         
         //calls, continues, scores,
         infoPanel = new JPanel(new GridBagLayout());
-        infoPanel.setBackground(Color.orange);
         infoPanel.setPreferredSize(new Dimension(500, 120));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -93,7 +89,6 @@ public class GamePanel extends JPanel implements ActionListener{
 
         // Create an inner panel for the "info" label
         JPanel infoInnerPanel = new JPanel(new BorderLayout());
-        infoInnerPanel.setBackground(Color.white);
         
         JPanel continuePanel = new JPanel(new GridLayout(2, 1, 10, 10));
         continueButton = new JButton("Continue");
@@ -118,7 +113,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
         JPanel prizesInnerPanel = new JPanel(new BorderLayout());
 
-        prizes = new JLabel("test");
+        prizes = new JLabel("");
         prizes.setHorizontalAlignment(JLabel.CENTER);
         prizes.setVerticalAlignment(JLabel.CENTER);
 
@@ -136,6 +131,7 @@ public class GamePanel extends JPanel implements ActionListener{
         
         game.nextQuestion();
         updateQuestion();
+        prizes.setText("Score: " + game.getScore());
     }
     
     @Override
@@ -159,6 +155,7 @@ public class GamePanel extends JPanel implements ActionListener{
             {
                 if (e.getSource() == optionButtons[i])
                 {
+                    prizes.setText("Score: " + game.getScore());
                     if (game.submitAnswer(i))
                     {
                         lockOptions();
@@ -174,7 +171,6 @@ public class GamePanel extends JPanel implements ActionListener{
                         lockLifelines();
                         readUser();
                     }
-                    prizes.setText("" + game.getScore());
                 }
             }
 
@@ -278,6 +274,7 @@ public class GamePanel extends JPanel implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             String username = (String) e.getActionCommand();
             game.recordScore(username);
+            returnToMenu();
         }
         });
 
@@ -319,5 +316,23 @@ public class GamePanel extends JPanel implements ActionListener{
         {
             optionButtons[i].setEnabled(true);
         }
+    }
+    
+    public void returnToMenu() {
+        // Create a new instance of the MenuPanel
+        MenuPanel menuPanel = new MenuPanel();
+        
+        // Get the top-level ancestor, which should be your JFrame
+        JFrame topFrame = (JFrame) getTopLevelAncestor();
+        
+        // Remove the current GamePanel
+        topFrame.getContentPane().remove(this);
+        
+        // Add the MenuPanel to the JFrame
+        topFrame.getContentPane().add(menuPanel);
+        
+        // Validate and repaint the JFrame to update the UI
+        topFrame.revalidate();
+        topFrame.repaint();
     }
 }

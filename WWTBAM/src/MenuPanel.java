@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -71,16 +72,20 @@ public class MenuPanel extends JPanel implements ActionListener{
                     }
                     else
                     {
-                        String userPass = JOptionPane.showInputDialog(null, "Please input admin password:", "Password Input",  JOptionPane.QUESTION_MESSAGE);
+                        String userPass = JOptionPane.showInputDialog(this, "Please input admin password:", "Password Input",  JOptionPane.QUESTION_MESSAGE);
                         
-                        if (userPass.equals(ADMIN))
+                        if (userPass != null)
                         {
-                            JOptionPane.showMessageDialog(null, "Password Correct. Admin Mode Enabled.", "Password Success", JOptionPane.PLAIN_MESSAGE);
-                            addQuestion();
-                        }
-                        else
-                        {
-                            JOptionPane.showMessageDialog(null, "Incorrect Password. Please try again.", "Incorrect Password", JOptionPane.WARNING_MESSAGE);
+                            if (userPass.equals(ADMIN))
+                            {
+                                JOptionPane.showMessageDialog(this, "Password Correct. Admin Mode Enabled.", "Password Success", JOptionPane.PLAIN_MESSAGE);
+                                adminMode = true;
+                                addQuestion();
+                            }
+                            else
+                            {
+                                JOptionPane.showMessageDialog(this, "Incorrect Password. Please try again.", "Incorrect Password", JOptionPane.WARNING_MESSAGE);
+                            }
                         }
                     }
                     break;
@@ -94,7 +99,26 @@ public class MenuPanel extends JPanel implements ActionListener{
     
     private void addQuestion()
     {
-        //code here
+        for (int i = 0; i < 4; i++) {
+            menuOptions[i].setEnabled(false);
+        }
+
+        JDialog dialog = new JDialog(); // Create a new dialog
+        QuestionBuilder qb = new QuestionBuilder();
+        dialog.getContentPane().add(qb); // Add the QuestionBuilder panel to the dialog
+        dialog.pack();
+        dialog.setTitle("Question Builder");
+        dialog.setSize(450, 400);
+        dialog.setLocationRelativeTo(this);
+        dialog.setResizable(false);
+        dialog.setModal(true); // Set the dialog to be modal
+        dialog.setVisible(true); // Show the dialog and block further code execution until it's closed
+        
+
+        // Continue to "stage 2" after the dialog is closed
+        for (int i = 0; i < 4; i++) {
+            menuOptions[i].setEnabled(true);
+        }
     }
     
     private void handleStartGame()

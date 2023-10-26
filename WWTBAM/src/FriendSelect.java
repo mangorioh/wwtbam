@@ -11,6 +11,7 @@ public class FriendSelect extends JFrame {
         setTitle("Phone A Friend!");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
+        setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
