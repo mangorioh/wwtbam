@@ -39,29 +39,6 @@ public class TextUtils {
         return out.toString();
     }
     
-    /* 
-     * validates if user input is 1 character only, and valid available input
-     * params: String of user input, String of valid characters
-     * returns: boolean if input valid
-     */
-    public static boolean validateChoice(String input, String validInputs)
-    {
-        char[] chars = validInputs.toUpperCase().toCharArray();
-        
-        if (input.length() == 1)
-        {
-            for (char c : chars)
-            {
-                if (c == input.toUpperCase().charAt(0))
-                {
-                    return true;
-                }
-            }
-        }
-        
-        return false;
-    }
-    
     public static String swingText(String input)
     {
         return "<html>" + input.replaceAll("\n", "<br>") + "</html>";

@@ -17,7 +17,6 @@ public class MenuPanel extends JPanel implements ActionListener{
     
     JPanel centrePanel;
     JButton[] menuOptions;
-    JButton startButton, leaderboardButton, addQuestionButton, exitButton;
     private final String ADMIN = "pass";
     private boolean adminMode = false;
 
@@ -32,11 +31,11 @@ public class MenuPanel extends JPanel implements ActionListener{
         add(title, BorderLayout.NORTH);
         
         JPanel centreContainer = new JPanel(new FlowLayout());
-        centrePanel = new JPanel(new GridLayout(4, 1, 10, 10));
-        menuOptions = new JButton[4];
-        String[] menuOptionsText = new String[] { "Start Game", "View Leaderboard", "Add Question", "Exit" };
+        centrePanel = new JPanel(new GridLayout(5, 1, 10, 10));
+        menuOptions = new JButton[5];
+        String[] menuOptionsText = new String[] { "Start Game", "View Leaderboard", "Add Question", "Add Friend", "Exit" };
         
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < menuOptions.length; i++)
         {
             menuOptions[i] = new JButton();
             menuOptions[i].setText(menuOptionsText[i]);
@@ -53,7 +52,7 @@ public class MenuPanel extends JPanel implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < menuOptions.length; i++)
         {
             if (e.getSource() == menuOptions[i])
             {
@@ -66,30 +65,18 @@ public class MenuPanel extends JPanel implements ActionListener{
                     JOptionPane.showMessageDialog(null, scores.getTopTen(), "Leaderboard", JOptionPane.PLAIN_MESSAGE);
                     break;
                 case 2: // Add Question
-                    if (adminMode)
+                    if(checkAdmin())
                     {
                         addQuestion();
                     }
-                    else
+                    break;
+                case 3: // Add Friend
+                    if (checkAdmin())
                     {
-                        String userPass = JOptionPane.showInputDialog(this, "Please input admin password:", "Password Input",  JOptionPane.QUESTION_MESSAGE);
-                        
-                        if (userPass != null)
-                        {
-                            if (userPass.equals(ADMIN))
-                            {
-                                JOptionPane.showMessageDialog(this, "Password Correct. Admin Mode Enabled.", "Password Success", JOptionPane.PLAIN_MESSAGE);
-                                adminMode = true;
-                                addQuestion();
-                            }
-                            else
-                            {
-                                JOptionPane.showMessageDialog(this, "Incorrect Password. Please try again.", "Incorrect Password", JOptionPane.WARNING_MESSAGE);
-                            }
-                        }
+                        addFriend();
                     }
                     break;
-                case 3: // Exit
+                case 4: // Exit
                     System.exit(0);
                     break;
                 }
@@ -97,9 +84,29 @@ public class MenuPanel extends JPanel implements ActionListener{
         }
     }
     
+    private boolean checkAdmin()
+    {
+        if (adminMode)
+        {
+            return true;
+        }
+        
+        String userPass = JOptionPane.showInputDialog(this, "Please input admin password:", "Password Input",  JOptionPane.QUESTION_MESSAGE);
+
+        if (userPass != null && userPass.equals(ADMIN)) {
+            JOptionPane.showMessageDialog(this, "Password Correct. Admin Mode Enabled.", "Password Success", JOptionPane.PLAIN_MESSAGE);
+            adminMode = true;
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Incorrect Password. Please try again.", "Incorrect Password", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        return adminMode;
+    }
+    
     private void addQuestion()
     {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < menuOptions.length; i++) {
             menuOptions[i].setEnabled(false);
         }
 
@@ -116,7 +123,30 @@ public class MenuPanel extends JPanel implements ActionListener{
         
 
         // Continue to "stage 2" after the dialog is closed
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < menuOptions.length; i++) {
+            menuOptions[i].setEnabled(true);
+        }
+    }
+    
+    private void addFriend()
+    {
+        for (int i = 0; i < menuOptions.length; i++) {
+            menuOptions[i].setEnabled(false);
+        }
+
+        JDialog dialog = new JDialog(); // Create a new dialog
+        FriendBuilder fb = new FriendBuilder();
+        dialog.getContentPane().add(fb); // Add the QuestionBuilder panel to the dialog
+        dialog.pack();
+        dialog.setTitle("Question Builder");
+        dialog.setLocationRelativeTo(this);
+        dialog.setResizable(false);
+        dialog.setModal(true); // Set the dialog to be modal
+        dialog.setVisible(true); // Show the dialog and block further code execution until it's closed
+        
+
+        // Continue to "stage 2" after the dialog is closed
+        for (int i = 0; i < menuOptions.length; i++) {
             menuOptions[i].setEnabled(true);
         }
     }

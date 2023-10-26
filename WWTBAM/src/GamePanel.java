@@ -21,12 +21,12 @@ public class GamePanel extends JPanel implements ActionListener{
     JLabel[] votes;
     JButton[] lifelineButtons, optionButtons;
     JButton continueButton, endButton;
-    Game2 game;
+    Game game;
     LifeLine[] lifelines;
     
     public GamePanel()
     {
-        game = new Game2();
+        game = new Game();
         this.lifelines = game.getLifelines();
         
         setLayout(new BorderLayout(10, 10));

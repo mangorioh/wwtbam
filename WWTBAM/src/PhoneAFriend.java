@@ -29,6 +29,8 @@ public class PhoneAFriend extends LifeLine{
         this.friends = db.getFriends();
         this.resetUses();
         this.friend = "";
+        
+        db.closeConnections();
     }
     
     /* 

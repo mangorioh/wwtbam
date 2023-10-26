@@ -9,9 +9,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 public class QuestionBuilder extends JPanel {
 
@@ -61,10 +63,10 @@ public class QuestionBuilder extends JPanel {
         // Panel for the "Create Question" button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton createQuestionButton = new JButton("Add Question");
-        createQuestionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buildQuestion();
+        createQuestionButton.addActionListener((ActionEvent e) -> {
+            if (buildQuestion())
+            {
+                SwingUtilities.getWindowAncestor(this).dispose();
             }
         });
         buttonPanel.add(createQuestionButton);
@@ -74,7 +76,7 @@ public class QuestionBuilder extends JPanel {
         setVisible(true);
     }
 
-    private void buildQuestion() {
+    private boolean buildQuestion() {
         String[] answers = new String[4];
         int correctAnswerIndex = -1;
 
@@ -85,7 +87,30 @@ public class QuestionBuilder extends JPanel {
             }
         }
 
+        //validate inputs
+        if (promptField.getText().trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "Prompt cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (correctAnswerIndex == -1)
+        {
+            JOptionPane.showMessageDialog(null, "Please select a correct answer.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (answers[i].trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "Answers cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        
         DBManager db = new DBManager();
         //db.addQuestion(new Question(promptField.getText(), correctAnswerIndex, answers));
+        db.closeConnections();
+        return true;
     }
 }
