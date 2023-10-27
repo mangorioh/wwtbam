@@ -18,7 +18,7 @@ public class UserInput extends JFrame {
     private JLabel requirements;
 
     public UserInput(ActionListener actionListener) {
-        setTitle("Phone A Friend!");
+        setTitle("Record Your Score");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);

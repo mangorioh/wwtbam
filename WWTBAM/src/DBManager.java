@@ -15,7 +15,7 @@ import java.sql.PreparedStatement;
 
 public class DBManager {
     
-    String url = "jdbc:derby://localhost:1527/WWTBAMDB;create=true";  //url of the DB host
+    String url = "jdbc:derby:WWTBAMDB;create=true";  //url of the DB host
     
     String dbusername = "pdc";  //your DB username
     String dbpassword = "pdc";   //your DB password

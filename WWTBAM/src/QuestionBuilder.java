@@ -26,12 +26,10 @@ public class QuestionBuilder extends JPanel {
         setSize(450, 400);
         setLayout(new BorderLayout());
 
-        // Outer panel with BoxLayout to center components vertically
         JPanel outerContainer = new JPanel();
         outerContainer.setLayout(new BoxLayout(outerContainer, BoxLayout.Y_AXIS));
         outerContainer.add(Box.createRigidArea(new java.awt.Dimension(0, 20)));
 
-        // Panel for the question prompt
         JPanel promptPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel promptLabel = new JLabel("Enter the question prompt:");
         promptField = new JTextField(20);
@@ -39,7 +37,6 @@ public class QuestionBuilder extends JPanel {
         promptPanel.add(promptField);
         outerContainer.add(promptPanel);
 
-        // Panel for answers
         JPanel answersPanel = new JPanel();
         answersPanel.setLayout(new BoxLayout(answersPanel, BoxLayout.Y_AXIS));
         JLabel answerLabel = new JLabel("Enter possible answers and check the correct ones:");
@@ -60,7 +57,6 @@ public class QuestionBuilder extends JPanel {
         outerContainer.add(answerLabel);
         outerContainer.add(answersPanel);
 
-        // Panel for the "Create Question" button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton createQuestionButton = new JButton("Add Question");
         createQuestionButton.addActionListener((ActionEvent e) -> {

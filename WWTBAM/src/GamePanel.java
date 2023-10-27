@@ -103,7 +103,7 @@ public class GamePanel extends JPanel implements ActionListener{
         endButton.setVisible(false);
         continuePanel.add(endButton);
 
-        info = new JLabel("test!!!!!");
+        info = new JLabel("info goes here");
         info.setHorizontalAlignment(JLabel.CENTER);
         info.setVerticalAlignment(JLabel.CENTER);
 
@@ -113,7 +113,7 @@ public class GamePanel extends JPanel implements ActionListener{
 
         JPanel prizesInnerPanel = new JPanel(new BorderLayout());
 
-        prizes = new JLabel("");
+        prizes = new JLabel("score goes here");
         prizes.setHorizontalAlignment(JLabel.CENTER);
         prizes.setVerticalAlignment(JLabel.CENTER);
 
