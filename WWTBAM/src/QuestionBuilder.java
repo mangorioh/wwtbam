@@ -82,13 +82,25 @@ public class QuestionBuilder extends JPanel {
                 correctAnswerIndex = i;
             }
         }
-
+        
         //validate inputs
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++)
+            {
+                if (answers[i].equals(answers[j]) && i != j)
+                {
+                    JOptionPane.showMessageDialog(null, "Please provide unique answer options.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        }
+
         if (promptField.getText().trim().isEmpty())
         {
             JOptionPane.showMessageDialog(null, "Prompt cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        
         if (correctAnswerIndex == -1)
         {
             JOptionPane.showMessageDialog(null, "Please select a correct answer.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -53,14 +53,21 @@ public class FriendBuilder extends JPanel {
             return false;
         }
         
+        if (!chanceInput.getText().matches("^\\d+(\\.\\d{1,2})?$")) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid number between 0 and 1 (max 2 decimal places).", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
         double chance;
         try {
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            chance = decimalFormat.parse(chanceInput.getText()).doubleValue();
+            double parsedValue = Double.parseDouble(chanceInput.getText());
+            double roundedValue = Math.round(parsedValue * 100.0) / 100.0; // Round to 2 decimal places
+            chance = roundedValue;
+
             if (chance < 0.0 || chance > 1.0) {
                 throw new NumberFormatException();
             }
-        } catch (ParseException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Invalid input. Please enter a number between 0 and 1 (max 2 decimal places).", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
