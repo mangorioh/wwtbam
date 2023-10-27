@@ -19,9 +19,7 @@ public class UserScores {
      * returns: newest added user
      */
     public User addScore(User user)
-    {
-        DBManager db = new DBManager();
-        
+    {        
         db.addScore(user);
         
         this.users = db.getScores();

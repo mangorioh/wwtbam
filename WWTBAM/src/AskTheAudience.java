@@ -34,7 +34,7 @@ public class AskTheAudience extends LifeLine{
      * params: correct answer
      * returns: array of integers that sum to 100
      */
-    private int[] pollAudience(int correctAnswer)
+    public int[] getHint(int correctAnswer)
     {
         Random rand = new Random();
         
@@ -68,20 +68,6 @@ public class AskTheAudience extends LifeLine{
     }
     
     /* 
-     * formats and prints generated votes
-     * params: integer array of votes
-     * returns: none
-     */
-    public void printResults(int[] votes)
-    {
-        System.out.println("And the results are in!");
-        for (int i = 0; i < Question.getANSQTY(); i++) 
-        {
-            System.out.println("  " + Question.getIDENTIFIERS()[i] + " : " + votes[i] + "%");
-        }
-    }
-    
-    /* 
      * override abstract method
      * params: none
      * returns: boolean of if lifeline has uses left
@@ -98,10 +84,8 @@ public class AskTheAudience extends LifeLine{
      * returns: none
      */
     @Override
-    public void use(int correctAnswer)
+    public void use()
     {
-        Random rand = new Random();
-        printResults(pollAudience(correctAnswer));
         uses--;
     }
     
@@ -111,7 +95,7 @@ public class AskTheAudience extends LifeLine{
      */
     public String toString()
     {
-        return "Ask the Audience | Uses Left: " + uses;
+        return "Ask the Audience\nUses Left: " + uses;
     }
     
 }

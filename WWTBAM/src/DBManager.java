@@ -13,19 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.sql.PreparedStatement;
 
-
-/**
- *
- * @author Aron
- */
-
-//todo: migrate fileio to dbmanager
-//      failsafe establish connection to use file pool
-//      make data manager for game side (prevent excessive db accessing)
-
 public class DBManager {
     
-    String url = "jdbc:derby://localhost:1527/WWTBAMDB;create=true";  //url of the DB host
+    String url = "jdbc:derby:WWTBAMDB;create=true";  //url of the DB host
     
     String dbusername = "pdc";  //your DB username
     String dbpassword = "pdc";   //your DB password
@@ -46,19 +36,8 @@ public class DBManager {
             conn = DriverManager.getConnection(url, dbusername, dbpassword);
             
             System.out.println(url + "db connected");
-            
-//            Statement statement = conn.createStatement();
-//            String tableName = "UserInfo";
-//
-//            if (!checkTableExisting(tableName)) {
-//                statement.executeUpdate("CREATE TABLE " + tableName + " (user VARCHAR(12), score INT)");
-//            }
-//            
-//            statement.close();
-
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
-
         }
     }
 

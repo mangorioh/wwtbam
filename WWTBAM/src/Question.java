@@ -72,86 +72,11 @@ public class Question {
      * params: user choice
      * returns: boolean if correct answer matches user choice
      */
-    public boolean checkAnswer(char choice)
+    public boolean checkAnswer(int choice)
     {
-        return (IDENTIFIERS[correctAnswer] == choice);
+        return (correctAnswer == choice);
     }
-    
-    /* 
-     * translates user choice to index equivalent in identifiers
-     * params: user choice
-     * returns: respective index
-     */
-    public static int choiceToIndex(char choice)
-    {
-        for (int i = 0; i < IDENTIFIERS.length; i++)
-        {
-            if (choice == IDENTIFIERS[i])
-            {
-                return i;
-            }
-        }
-        
-        //can never occur
-        return -1;
-    }
-    
-    /* 
-     * iterates through and prints prompt from available identifier options
-     * params: none
-     * returns: none
-     */
-    public static void questionPrompt()
-    {
-        System.out.print("Please input the correct answer, from the options ");
-            for (int i = 0; i < ANS_QTY; i++)
-            {
-                System.out.print(i == (ANS_QTY - 1) ? "or " : "");
-                System.out.print(IDENTIFIERS[i]);
-                System.out.print(i < (ANS_QTY - 2) ? ", " : " ");
-            }
-            System.out.println("");
-    }
-    
-    /* 
-     * dedicated method to create new questions for database
-     * minimises human error in manually adding questions to file
-     * params: none
-     * returns: new Question object
-     */
-    public static Question createQuestion()
-    {
-        Scanner scan = new Scanner(System.in);
-        
-        System.out.println("Input question prompt:");
-        String promptOut = scan.nextLine();
-        
-        String[] answersOut = new String[ANS_QTY];
-        for (int i = 0; i < ANS_QTY; i++)
-        {
-            System.out.println("Please input Answer option " + IDENTIFIERS[i]);
-            answersOut[i] = scan.nextLine();
-        }
-        
-        String charOut;
-        do
-        {
-            Question.questionPrompt();
-            charOut = scan.nextLine().toUpperCase();
-        } while (!TextUtils.validateChoice(charOut, new String(IDENTIFIERS)));
-        
-        int cAnsOut = 0; 
-        for (int i = 0; i < ANS_QTY; i++)
-        {
-            if (charOut.charAt(0) == IDENTIFIERS[i])
-            {
-                cAnsOut = i;
-            }
-        }
-        
-        return new Question(promptOut, cAnsOut, answersOut);
-    }
-    
+       
     @Override
     public String toString()
     {

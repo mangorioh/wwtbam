@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -19,6 +20,7 @@ public class PhoneAFriend extends LifeLine{
     private HashMap<String, Double> friends;
     private int uses;
     private DBManager db;
+    private String friend;
     
     public PhoneAFriend()
     {
@@ -26,6 +28,9 @@ public class PhoneAFriend extends LifeLine{
         
         this.friends = db.getFriends();
         this.resetUses();
+        this.friend = "";
+        
+        db.closeConnections();
     }
     
     /* 
@@ -43,32 +48,61 @@ public class PhoneAFriend extends LifeLine{
      * params: friend's guess
      * returns: none
      */
-    private void speak(int guess)
+    public String getSpeak(Question currentQuestion)
     {
         Random rand = new Random();
+               
+        int guess;
+        double chance = rand.nextDouble();
         
-        System.out.println("  PHONE : You need help with this question? Hmm...");
-        System.out.print("  PHONE : ");
+        System.out.println(friend);
+        
+        if (friends.get(friend) > chance){
+            guess = currentQuestion.getCorrectAnswer();
+        }
+        else {
+            do {
+                guess = rand.nextInt(Question.getANSQTY());
+            } while (guess == currentQuestion.getCorrectAnswer());
+        }
+        
+        String out = "";
+        out += "\nPHONE : Hi, this is " + friend + ". Oh, you need help with this question? Hmm...";
+        out += "\n  PHONE : ";
         
         int dialogue = rand.nextInt(4);
         switch (dialogue) {
-            case 0 -> System.out.print("It might be ");
-            case 1 -> System.out.print("I think it's ");
-            case 2 -> System.out.print("It could be ");
-            case 3 -> System.out.print("I'm guessing ");
+            case 0 -> out += "It might be ";
+            case 1 -> out += "I think it's ";
+            case 2 -> out += "It could be ";
+            case 3 -> out += "I'm guessing ";
         }
             
-        System.out.print(Question.getIDENTIFIERS()[guess]);
+        out += currentQuestion.getAnswers()[guess];
 
         dialogue = rand.nextInt(4);
         switch (dialogue) {
-            case 0 -> System.out.print("!");
-            case 1 -> System.out.print( "...");
-            case 2 -> System.out.print(". Hope I'm right!");
-            case 3 -> System.out.print("?");
+            case 0 -> out += "!";
+            case 1 -> out +=  "...";
+            case 2 -> out += ". Hope I'm right!";
+            case 3 -> out += "?";
         }
         
-        System.out.print("\n");
+        //removes friend once selected
+        friends.remove(friend);
+        
+        return out;
+    }
+    
+    public String[] getFriends()
+    {
+        ArrayList<String> friendNames = new ArrayList<>();
+
+        for (String friendName : friends.keySet()) {
+            friendNames.add(friendName);
+        }
+
+        return friendNames.toArray(new String[0]);
     }
     
     /* 
@@ -76,22 +110,9 @@ public class PhoneAFriend extends LifeLine{
      * params: none
      * returns: none
      */
-    private double selectFriend()
+    public void selectFriend(String friend)
     {      
-        System.out.println("Here are your friends available to call:");
-        for (Map.Entry<String, Double> entry : friends.entrySet())
-        {
-            System.out.println("" + entry.getKey());
-        }
-        
-        String friend = queryInput();
-        System.out.println("Ringing....");
-        
-        double out = friends.get(friend);
-        //removes friend once called
-        friends.remove(friend);
-        
-        return out;
+        this.friend = friend;
     }
     
     /* 
@@ -123,34 +144,15 @@ public class PhoneAFriend extends LifeLine{
      * returns: none
      */
     @Override
-    public void use(int cAnswer)
+    public void use()
     {
-        Random rand = new Random();
-        int guess;
-        
-        double chance = rand.nextDouble();
-        
-        //if friend's correct chance exceeds randomly generated chance, gives correct answer
-        if (selectFriend() > chance){
-            guess = cAnswer;
-        }
-        else {
-            do {
-                guess = rand.nextInt(Question.getANSQTY());
-            } while (guess == cAnswer);
-        }
-        
-        speak(guess);
-        
         uses--;
     }
     
     @Override
     public String toString()
     {
-        return "Phone A Friend | Uses Left: " + uses;
+        return "Phone A Friend\nUses Left: " + uses;
     }
-
-    
     
 }
