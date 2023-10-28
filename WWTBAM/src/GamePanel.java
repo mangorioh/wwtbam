@@ -78,7 +78,6 @@ public class GamePanel extends JPanel implements ActionListener{
             audiencePanel.add(votes[i]);
         }
         
-        //calls, continues, scores,
         infoPanel = new JPanel(new GridBagLayout());
         infoPanel.setPreferredSize(new Dimension(500, 120));
 
@@ -87,7 +86,6 @@ public class GamePanel extends JPanel implements ActionListener{
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
 
-        // Create an inner panel for the "info" label
         JPanel infoInnerPanel = new JPanel(new BorderLayout());
         
         JPanel continuePanel = new JPanel(new GridLayout(2, 1, 10, 10));
@@ -188,6 +186,12 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    
+    /* 
+     * handles gui changes from lifeline use
+     * params: index of chosen lifeline
+     * returns: none
+     */
     private void useLifeline(int index)
     {
         LifeLine lifeline =  lifelines[index];
@@ -216,7 +220,7 @@ public class GamePanel extends JPanel implements ActionListener{
         }
         else if (lifeline instanceof PhoneAFriend phoneAFriend)
         {         
-            FriendSelect comboBoxFrame = new FriendSelect(phoneAFriend.getFriends(), new ActionListener() {
+            FriendSelect comboBoxFrame = new FriendSelect(phoneAFriend.getFriendNames(), new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedOption = (String) e.getActionCommand();
@@ -233,6 +237,11 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * updates gui for next question. clears unnecesary info from gui
+     * params: none
+     * returns: none
+     */
     private void updateQuestion()
     {
         if (game.getPlaying())
@@ -267,6 +276,11 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * get database record of users
+     * params: none
+     * returns: ArrayList of users
+     */
     private void readUser()
     {
         UserInput userInput = new UserInput(new ActionListener() {
@@ -283,6 +297,11 @@ public class GamePanel extends JPanel implements ActionListener{
         userInput.setVisible(true);
     }
     
+    /* 
+     * locks option gui elements
+     * params: none
+     * returns: none
+     */
     private void lockOptions()
     {
         for(int i = 0; i < optionButtons.length; i++)
@@ -291,6 +310,11 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * locks lifeline gui elements
+     * params: none
+     * returns: none
+     */
     private void lockLifelines()
     {
         for(int i = 0; i < lifelineButtons.length; i++)
@@ -299,6 +323,11 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * locks lifeline gui elements
+     * params: none
+     * returns: none
+     */
     private void unlockLifelines()
     {
         for(int i = 0; i < lifelineButtons.length; i++)
@@ -310,6 +339,11 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * locks option gui elements
+     * params: none
+     * returns: none
+     */
     private void unlockOptions()
     {
         for(int i = 0; i < optionButtons.length; i++)
@@ -318,20 +352,17 @@ public class GamePanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * brings menu panel back to gui
+     * params: none
+     * returns: none
+     */
     public void returnToMenu() {
-        // Create a new instance of the MenuPanel
         MenuPanel menuPanel = new MenuPanel();
         
-        // Get the top-level ancestor, which should be your JFrame
         JFrame topFrame = (JFrame) getTopLevelAncestor();
-        
-        // Remove the current GamePanel
         topFrame.getContentPane().remove(this);
-        
-        // Add the MenuPanel to the JFrame
         topFrame.getContentPane().add(menuPanel);
-        
-        // Validate and repaint the JFrame to update the UI
         topFrame.revalidate();
         topFrame.repaint();
     }

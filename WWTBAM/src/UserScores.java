@@ -1,7 +1,5 @@
 
 import java.util.ArrayList;
-import java.util.Collections;
-
 
 public class UserScores {
     private ArrayList<User> users;
@@ -15,6 +13,7 @@ public class UserScores {
     }
     
     /* 
+     * adds user to database / updates existing user score
      * params: user to add
      * returns: newest added user
      */

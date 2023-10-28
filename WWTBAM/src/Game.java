@@ -1,12 +1,6 @@
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Game {
     private static final int[] PRIZES = {0, 500, 1000, 2000, 5000, 10000, 20000, 50000, 75000, 150000, 250000, 500000, 1000000};
@@ -59,6 +53,11 @@ public class Game {
         db.addScore(new User(user.toUpperCase(), PRIZES[prize]));
     }
     
+    /* 
+     * submits user answer, updates game state accordingly
+     * params: user choice
+     * returns: boolean if answer correct
+     */
     public boolean submitAnswer(int i)
     {
         if (currentQuestion.checkAnswer(i))
@@ -83,25 +82,46 @@ public class Game {
         }
     }
 
+    /* 
+     * params: none
+     * returns: array of game's lifelines
+     */
     public LifeLine[] getLifelines(){
         return lifelines;
     }
     
+    /* 
+     * params: none
+     * returns: boolean of if game currently playing
+     */
     public boolean getPlaying()
     {
         return playing;
     }
     
+    /* 
+     * params: none
+     * returns: current game score
+     */
     public int getScore()
     {
         return PRIZES[prize];
     }
     
+    /* 
+     * params: none
+     * returns: current game question
+     */
     public Question getCurrentQuestion()
     {
         return currentQuestion;
     }
     
+    /* 
+     * changes current game question, removes last one from pool
+     * params: none
+     * returns: none
+     */
     public void nextQuestion()
     {
         Random rand = new Random();

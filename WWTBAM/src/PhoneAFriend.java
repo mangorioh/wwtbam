@@ -1,21 +1,9 @@
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Aron
- */
 public class PhoneAFriend extends LifeLine{
     private HashMap<String, Double> friends;
     private int uses;
@@ -44,9 +32,9 @@ public class PhoneAFriend extends LifeLine{
     }
     
     /* 
-     * creates and prints random line of dialogue for guess
-     * params: friend's guess
-     * returns: none
+     * creates random line of dialogue for guess
+     * params: current question
+     * returns: dialogue
      */
     public String getSpeak(Question currentQuestion)
     {
@@ -94,7 +82,11 @@ public class PhoneAFriend extends LifeLine{
         return out;
     }
     
-    public String[] getFriends()
+    /* 
+     * params: none
+     * returns: string array of names of available friends
+     */
+    public String[] getFriendNames()
     {
         ArrayList<String> friendNames = new ArrayList<>();
 
@@ -139,8 +131,8 @@ public class PhoneAFriend extends LifeLine{
     }
 
     /* 
-     * selects friend, and presents friend guess based onchance check
-     * params: correct answer
+     * detracts available uses
+     * params: none
      * returns: none
      */
     @Override

@@ -23,9 +23,8 @@ public class FiftyFifty extends LifeLine{
     }
 
     /* 
-     * takes correct answer, and generates another (incorrect) answer
-     * offers user both options, still maintaining original identifier order
-     * params: correct answer
+     * detracts available uses
+     * params: none
      * returns: none
      */
     @Override
@@ -33,6 +32,11 @@ public class FiftyFifty extends LifeLine{
         used = true;
     }
     
+    /* 
+     * generates two choices of right and wrong answer index
+     * params: correct answer index
+     * returns: right answer and wrong answer index
+     */
     public int[] getHint(int correctAnswer)
     {
         Random rand = new Random();

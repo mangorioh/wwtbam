@@ -84,6 +84,11 @@ public class MenuPanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * checks if in admin mode
+     * params: none
+     * returns: true if admin, otherwise false
+     */
     private boolean checkAdmin()
     {
         if (adminMode)
@@ -104,6 +109,11 @@ public class MenuPanel extends JPanel implements ActionListener{
         return adminMode;
     }
     
+    /* 
+     * locks menu gui elements
+     * params: none
+     * returns: none
+     */
     private void lockMenu()
     {
         for (int i = 0; i < menuOptions.length; i++) {
@@ -111,6 +121,11 @@ public class MenuPanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * unlocks menu gui elements
+     * params: none
+     * returns: none
+     */
     private void unlockMenu()
     {
         for (int i = 0; i < menuOptions.length; i++) {
@@ -118,6 +133,11 @@ public class MenuPanel extends JPanel implements ActionListener{
         }
     }
     
+    /* 
+     * initialises question builder in gui
+     * params: none
+     * returns: none
+     */
     private void addQuestion()
     {
         lockMenu();
@@ -136,6 +156,11 @@ public class MenuPanel extends JPanel implements ActionListener{
         unlockMenu();
     }
     
+    /* 
+     * initialises friend builder in gui
+     * params: none
+     * returns: none
+     */
     private void addFriend()
     {
         lockMenu();
@@ -153,6 +178,11 @@ public class MenuPanel extends JPanel implements ActionListener{
         unlockMenu();
     }
     
+    /* 
+     * brings game panel to gui
+     * params: none
+     * returns: none
+     */
     private void handleStartGame()
     {
         GamePanel gamePanel = new GamePanel();

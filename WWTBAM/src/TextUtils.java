@@ -39,6 +39,11 @@ public class TextUtils {
         return out.toString();
     }
     
+    /* 
+     * converts given string to be compatible as swing gui text
+     * params: string to convert
+     * returns: converted string
+     */
     public static String swingText(String input)
     {
         return "<html>" + input.replaceAll("\n", "<br>") + "</html>";

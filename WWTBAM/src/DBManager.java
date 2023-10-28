@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,11 +21,19 @@ public class DBManager {
         establishConnection();
     }
 
+    /* 
+     * params: none
+     * returns: connection
+     */
     public Connection getConnection() {
         return this.conn;
     }
 
-    //Establish connection
+    /* 
+     * establish database connection
+     * params: none
+     * returns: none
+     */
     public void establishConnection() {
         try {
             conn = DriverManager.getConnection(url, dbusername, dbpassword);
@@ -41,6 +44,11 @@ public class DBManager {
         }
     }
 
+    /* 
+     * custom database querying function
+     * params: command to run
+     * returns: ResultSet from query
+     */
     public ResultSet queryDB(String sql) {
         Statement statement;
         ResultSet resultSet = null;
@@ -56,6 +64,11 @@ public class DBManager {
         return resultSet;
     }
     
+    /* 
+     * custom database updating function
+     * params: command to run
+     * returns: none
+     */
     public void updateDB(String sql) {
         Statement statement;
 
@@ -66,33 +79,14 @@ public class DBManager {
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
         }
-        
-        System.out.println("TINGS");
     }
     
-    private boolean checkTableExisting(String newTableName) {
-        boolean flag = false;
-        try {
-
-            System.out.println("check existing tables.... ");
-            String[] types = {"TABLE"};
-            DatabaseMetaData dbmd = conn.getMetaData();
-            ResultSet rsDBMeta = dbmd.getTables(null, null, null, null);//types);
-            //Statement dropStatement=null;
-            while (rsDBMeta.next()) {
-                String tableName = rsDBMeta.getString("TABLE_NAME");
-                if (tableName.compareToIgnoreCase(newTableName) == 0) {
-                    System.out.println(tableName + "  is there");
-                    flag = true;
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-        }
-        return flag;
-    }
-    
-    public boolean checkUser(String username) {
+    /* 
+     * check if user exists in score database
+     * params: username
+     * returns: boolean if exists
+     */
+    private boolean checkUser(String username) {
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT USER_ID FROM SCORES "
@@ -105,12 +99,18 @@ public class DBManager {
                 return false;
             }
 
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
         }
         
         return false;
     }
     
+    /* 
+     * get database record of users
+     * params: none
+     * returns: ArrayList of users
+     */
     public ArrayList<User> getScores()
     {
         Statement statement;
@@ -131,6 +131,11 @@ public class DBManager {
         return out;
     }
     
+    /* 
+     * adds score to database
+     * params: user to add
+     * returns: none
+     */
     public void addScore(User u)
     {
         Statement statement;
@@ -139,12 +144,20 @@ public class DBManager {
             statement = conn.createStatement();
             if (checkUser(u.getUsername()))
             {
-                System.out.println("user found!!");
-                statement.executeUpdate("UPDATE SCORES SET SCORE = " + u.getScore() + " WHERE USER_ID = '" + u.getUsername() + "'");
+                System.out.println("user found. updating score");
+                
+                ResultSet rs = statement.executeQuery("SELECT * FROM SCORES WHERE");
+                User existing = new User(rs.getString("USER_ID"), rs.getInt("SCORE"));
+                
+                //only updates if new score is higher
+                if (u.getScore() > existing.getScore())
+                {
+                    statement.executeUpdate("UPDATE SCORES SET SCORE = " + u.getScore() + " WHERE USER_ID = '" + u.getUsername() + "'");                
+                }
             }
             else
             {
-                System.out.println("user not found!!");
+                System.out.println("user not found. generating new user");
                 statement.executeUpdate("INSERT INTO SCORES VALUES ('" + u.getUsername() + "', " + u.getScore() + ")");
             }
 
@@ -153,6 +166,11 @@ public class DBManager {
         }
     }
     
+    /* 
+     * get database record of lifeline friends
+     * params: none
+     * returns: HashMap of friends + weightings
+     */
     public HashMap<String, Double> getFriends() {
         HashMap<String, Double> out = new HashMap<>();
         Statement statement;
@@ -172,6 +190,11 @@ public class DBManager {
         return out;
     }
     
+    /* 
+     * adds friend to friend list for lifeline
+     * params: friend name, friend weighting
+     * returns: none
+     */
     public void addFriend(String name, double weight)
     {
         Statement statement;
@@ -185,6 +208,11 @@ public class DBManager {
         }
     }
     
+    /* 
+     * get database record of questions
+     * params: none
+     * returns: ArrayList of questions
+     */
     public ArrayList<Question> getQuestions() {
         ArrayList<Question> out = new ArrayList<>();
         Statement statement;
@@ -207,6 +235,11 @@ public class DBManager {
         return out;
     }
     
+    /* 
+     * adds question to database
+     * params: question to add
+     * returns: none
+     */
     public void addQuestion(Question q) {
         String sql = "INSERT INTO QUESTIONS VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -224,12 +257,17 @@ public class DBManager {
         }
     }
     
+    /* 
+     * closes connection
+     * params: none
+     * returns: none
+     */
     public void closeConnections() {
         if (conn != null) {
             try {
                 conn.close();
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
         }
     }

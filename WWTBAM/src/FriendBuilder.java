@@ -3,8 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -45,6 +43,11 @@ public class FriendBuilder extends JPanel {
         add(createFriendButton);
     }
     
+    /* 
+     * validates user input, then adds to database if valid
+     * params: none
+     * returns: boolean of success
+     */
     private boolean buildFriend()
     {
         String name = TextUtils.titleCase(nameInput.getText());

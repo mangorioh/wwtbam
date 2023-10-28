@@ -1,15 +1,6 @@
 
 import java.util.Random;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Aron
- */
 public class AskTheAudience extends LifeLine{
     private int uses;
     
@@ -79,8 +70,8 @@ public class AskTheAudience extends LifeLine{
     }
 
     /* 
-     * uses lifeline, and detracts available uses
-     * params: correct answer
+     * detracts available uses
+     * params: none
      * returns: none
      */
     @Override
