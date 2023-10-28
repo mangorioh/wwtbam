@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
-
 public class UserInput extends JFrame {
     private JTextField userField;
     private JButton confirmButton;

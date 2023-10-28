@@ -146,9 +146,12 @@ public class DBManager {
             {
                 System.out.println("user found. updating score");
                 
-                ResultSet rs = statement.executeQuery("SELECT * FROM SCORES WHERE");
-                User existing = new User(rs.getString("USER_ID"), rs.getInt("SCORE"));
-                
+                ResultSet rs = statement.executeQuery("SELECT * FROM SCORES WHERE USER_ID = '" + u.getUsername() + "'");
+                User existing = null;
+                while (rs.next())
+                {
+                    existing = new User(rs.getString("USER_ID"), rs.getInt("SCORE"));
+                }
                 //only updates if new score is higher
                 if (u.getScore() > existing.getScore())
                 {
